@@ -1,16 +1,19 @@
 from __future__ import absolute_import
 
-from lazy_serializer.base import Serializer
-from lazy_serializer import fields
+from beerializer.base import Serializer
+from beerializer import fields
 from sqlalchemy import types
 
 try:
-    from sqlalchemy_utils import JSONType, ScalarListType
+    from sqlalchemy_utils import JSONType, UUIDType, ScalarListType
 except ImportError:
-    class ScalarListType(object):
+    class JSONType(object):
         pass
 
-    class JSONType(object):
+    class UUIDType(object):
+        pass
+
+    class ScalarListType(object):
         pass
 
 
@@ -24,6 +27,7 @@ SERIALIZER_FIELD_MAPPING = {
     types.Numeric: fields.FloatField,  # -> Float
     ScalarListType: lambda: fields.ListField(fields.StringField),
     JSONType: fields.DictField,
+    UUIDType: fields.UuidField,
     # types.Interval: not implemented
     # types.LargeBinary: not implemented
     # types.PickleType: not implemented
